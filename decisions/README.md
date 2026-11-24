@@ -1,12 +1,12 @@
 # 결정 기록
 
-기존 결정 24개의 번호와 최초 날짜를 보존한다. 현재 상태, 대안과 변경 이유는 각 ADR이 소유한다. proposed/부분 채택/대체/accepted를 구현 또는 검증 완료와 혼동하지 않는다.
+결정의 전체 번호와 최초 날짜를 보존한다. 현재 상태, 대안과 변경 이유는 각 ADR이 소유한다. proposed/부분 채택/대체/accepted를 구현 또는 검증 완료와 혼동하지 않는다.
 
 ## 상태를 읽는 방법
 
 `accepted`는 그 문서에 명시한 설계 방향을 채택했다는 뜻이다. 구현 완료, 테스트 통과나 PR 승인을 뜻하지 않는다. `proposed`는 아직 선택이 끝나지 않은 안, `superseded`는 후속 결정으로 대체된 과거 결정이다. 부분 채택 문서는 적용할 범위와 남은 선택을 본문에서 나눈다. [ADR 원문의 상태 정의](https://www.cognitect.com/blog/2011/11/15/documenting-architecture-decisions)와 [MADR의 결정/확인 구분](https://adr.github.io/madr/)을 따른다.
 
-2026-11-24에 기존 합의와 본문을 대조해 상태를 정리했다. 새 안을 일괄 승인한 것이 아니다. 현재 24개 중 채택 21개, 부분 채택 1개, 제안 1개, 대체 1개다.
+2026-11-24에 기존 합의와 본문을 대조해 상태를 정리했다. 새 안을 일괄 승인한 것이 아니다. 이후 MIT 적용 결정 0025를 추가해 현재 25개 중 채택 22개, 부분 채택 1개, 제안 1개, 대체 1개다.
 
 | 구분 | 해당 결정 | 남은 내용 |
 | --- | --- | --- |
@@ -19,7 +19,7 @@
 
 ## 번호와 분류
 
-현재 번호는 **이 WIKI 전체에서 부여한 결정 식별자**다. 폴더 안의 순번이 아니다. 예를 들어 0003은 workflow, 0004는 architecture, 0005는 다시 workflow에 있으므로 한 폴더에서만 보면 번호가 건너뛴다. 아래 전체 목록에는 0001부터 0024까지 누락이나 중복이 없다.
+현재 번호는 **이 WIKI 전체에서 부여한 결정 식별자**다. 폴더 안의 순번이 아니다. 예를 들어 0003은 workflow, 0004는 architecture, 0005는 다시 workflow에 있으므로 한 폴더에서만 보면 번호가 건너뛴다. 아래 전체 목록에는 0001부터 0025까지 누락이나 중복이 없다.
 
 architecture는 구조와 이식, development는 개발 운영, integration은 연계, knowledge는 WIKI 지식, runtime은 설치와 실행, workflow는 검증과 복구 결정을 모은다. 이 분류와 전체 번호순 목록을 함께 사용한다.
 
@@ -51,5 +51,6 @@ architecture는 구조와 이식, development는 개발 운영, integration은 �
 | 0022 | [ADR 0022: WIKI 연결의 기본 진입](runtime/0022-wiki-entry.md) | `accepted` |
 | 0023 | [ADR 0023: Python 표준 규격을 이용한 기기 명령 등록](runtime/0023-command-registration.md) | `accepted` |
 | 0024 | [ADR 0024: 현재 프로젝트 우선과 실행별 프로젝트 선택](runtime/0024-project-selection.md) | `accepted` |
+| 0025 | [ADR 0025: 코드와 개발 WIKI의 MIT 라이선스](development/0025-license.md) | `accepted` |
 
 [토의](../discussions/README.md)에서 검토 근거를, [검증 기록](../evidence/README.md)에서 실제 확인 범위와 한계를 찾는다.

@@ -16,7 +16,7 @@ OnepLoom의 개발 지식을 관리하는 독립 저장소다. 요구사항과 �
 | 전체 책임과 현재 구조 | [아키텍처](design/architecture.md), [설계 안내](design/README.md) |
 | 코드/WIKI의 소유와 개발 순서 | [개발 공간](development/workspace.md), [진행 순서](development/roadmap.md) |
 | 상세 설치/실행/상태/복원 계약 | [주제별 설계](design/README.md) |
-| 왜 선택했고 무엇을 기각했는가 | [토의](discussions/README.md), [결정 24개](decisions/README.md) |
+| 왜 선택했고 무엇을 기각했는가 | [토의](discussions/README.md), [결정 목록](decisions/README.md) |
 | 어떤 조건에서 시험할 것인가 | [검증 계획](verification/README.md), [상세 수용 입력](verification/acceptance.md) |
 | 실제로 무엇이 확인됐는가 | [관측과 한계](evidence/README.md), [문제 대장](evidence/issues.md), [MCP 비교 사례](evidence/cases/mcp-cost.md) |
 | 개념 설명이 필요한가 | [기술 설명](explanations/README.md) |
@@ -32,3 +32,7 @@ OnepLoom의 개발 지식을 관리하는 독립 저장소다. 요구사항과 �
 저장소 안의 Markdown 상대 파일 링크를 사용한다. GitHub와 Obsidian의 제목 링크 해석이 달라 파일 링크 옆의 「정확한 절 제목」으로 읽을 위치를 안내한다. 문서 이동 시 대상 파일과 해당 절의 존재를 함께 검사한다.
 
 코드와의 대응은 실제 두 커밋/PR로 연결한다. 원격 주소는 [개발 공간 — 「코드와 WIKI」](development/workspace.md)에 정리했다. 실제 생성된 SHA와 PR 링크만 사용하고, 로컬 기록과 원격 게시 완료를 구분한다. 초기 커밋, 기본 모듈의 동작 검증 완료, 첫 릴리스는 별개의 단계다.
+
+## 라이선스
+
+이 저장소의 문서와 코드 예시는 [MIT License](LICENSE)를 따른다. 적용 범위와 선택 이유는 [ADR 0025](decisions/development/0025-license.md)에서 확인한다.

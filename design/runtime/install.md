@@ -418,6 +418,8 @@ Codex가 요구하는 프로젝트 신뢰는 해당 도구의 사용자 절차�
 
 여기서 기기는 **현재 Windows 사용자 계정의 프로그램 환경**을 뜻한다. 담당자의 명령 등록이 다른 팀원의 PC에 전파되지는 않는다. 팀원에게 가상환경, pip, PATH와 등록 JSON을 각각 조작하게 하지 않고 [관리 도구의 한 실행 — 「시작 명령만 처음 준비하기」](management.md)이 처리한다. 프로젝트별 WIKI 연결은 별도 로컬 값이므로 각자의 위치와 권한을 확인해야 한다.
 
+공식 배포와 프로젝트에 복사되는 OnepLoom 자산에는 [ADR 0025](../../decisions/development/0025-license.md)에 따른 MIT 저작권 고지와 허가문을 포함한다. 고지는 OnepLoom 전용 설치 영역에서 보존하고, 사용자의 기존 루트 LICENSE나 WIKI 라이선스를 덮어쓰지 않는다. 외부 자산에 별도 고지가 필요하면 해당 조건도 유지한다.
+
 공식 배포에는 외부 `oneploom.py`, 연결용 wheel, 검증할 출처/파일 기준과 필요한 고지를 넣는다. wheel은 작은 프로젝트 발견/인계 프로그램이며 하네스 본체가 아니다. 프로젝트의 `oneploom/`에는 편집 가능한 skill, script, 공유 설정과 설치 기준이 남는다. 새 clone에서 이 기준을 읽되 wheel, 가상환경과 다른 사람의 `.harness/`를 복사하지 않는다. `oneploom/bootstrap/`에 wheel을 넣던 이전 상세는 [관측 기록 (정리 전 기록)](../../evidence/experiments/design/2026-11-23_07-38-22-wiki-reconcile.md)에 보존하며 현재 설치 계약으로 사용하지 않는다.
 
 준비에 쓸 wheel은 릴리스의 정확한 파일로 확인한다. 실제 파일명은 [PyPA wheel 규격](https://packaging.python.org/en/latest/specifications/binary-distribution-format/)의 공식 배포명/버전/호환 태그를 따른다. 폴더의 첫 파일, 임의의 최신 파일이나 다른 프로젝트가 요구하는 버전으로 자동 전환하지 않는다. 이미 등록한 명령과 프로젝트의 호환성은 [프로젝트 인계](project-entry.md)에서 검사한다. 같은 프로젝트의 소스 편집은 명령 재빌드/재설치 사유가 아니다.
