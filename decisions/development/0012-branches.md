@@ -2,7 +2,7 @@
 
 - 날짜: 2026-10-28
 - 설계 상태: `accepted` — 2026-11-23 main과 작업 브랜치를 채택했고, 11/24 필요한 경우의 임시 통합 브랜치와 main PR의 Rebase and merge를 보완 채택했다. 실제 원격 운영과 병합 검증은 별도다.
-- 구현 및 검증: 브랜치 관계만 읽기 확인. 실제 병합, 회귀 검증 미실행
+- 구현 및 검증: 첫 작업 브랜치와 커밋/push, 코드/WIKI PR의 이슈 연결 및 Project 등록을 확인했다. 실제 병합과 그 이후 마감은 미실행이다.
 - 적용 범위: OnepLoom 코드와 개발 WIKI의 운영. 소비 프로젝트의 기존 브랜치와 이력은 해당 프로젝트의 정책에 따라 다룬다.
 - 상세 운영 규약: 코드 CONTRIBUTING. 이 ADR은 대안, 채택 이유와 이력 보존의 판단을 기록한다.
 
@@ -94,4 +94,4 @@ GitHub의 rebase 병합은 새 SHA를 만든다. 따라서 코드/WIKI를 실제
 
 제목과 본문 형식의 소유 위치는 코드 CONTRIBUTING의 「커밋 메시지」와 「PR 작성과 코드/WIKI 연결」이다. 요약, 관련 요구/결정, 실제 검증과 검토 초점을 남기고 변경에 불필요한 항목을 강제하지 않는다. WIKI PR도 같은 방식으로 문서 변화와 근거, 대응하는 코드 작업을 설명한다.
 
-개발 초기에는 두 저장소의 커밋/PR 연결을 수동으로 기록한다. [ADR 0017](../integration/0017-work-sync.md)의 기능이 준비되고 실제 검증을 통과하면 같은 흐름을 자체 적용한다. 그 전의 수동 운영을 자동화 검증 성공으로 계산하거나 자동화 완성을 개발 시작 조건으로 만들지 않는다. GitHub Projects 보드는 필요하면 두 저장소의 Issue/PR을 함께 보는 용도로 추가하며, 두 Git 이력, 권한, 커밋을 하나로 합치지는 않는다. [GitHub Projects](https://docs.github.com/en/issues/planning-and-tracking-with-projects/learning-about-projects/about-projects).
+개발 초기에는 실행 도구로 두 저장소의 실제 커밋/PR을 연결하고 결과를 확인한다. [ADR 0017](../integration/0017-work-sync.md)의 제품 기능이 준비되고 실제 검증을 통과하면 같은 흐름을 자체 적용한다. 현재 운영을 제품의 원격 연계 기능 검증 성공으로 계산하거나 제품 자동화 완성을 개발 시작 조건으로 만들지 않는다. GitHub Projects는 공통 이슈 중심으로 운영하며 PR은 이슈의 정식 관계로 확인한다. PR 카드를 별도로 등록하지 않는 방향을 11/25 재확인했다. 구체 운영과 제출 전 요구사항 검토는 코드 CONTRIBUTING이 소유한다. 보드는 두 Git 이력, 권한, 커밋을 하나로 합치지 않는다. [GitHub Projects](https://docs.github.com/en/issues/planning-and-tracking-with-projects/learning-about-projects/about-projects).
