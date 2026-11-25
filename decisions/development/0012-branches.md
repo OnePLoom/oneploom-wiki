@@ -42,11 +42,11 @@ GitHub flow는 작업 브랜치에서 여러 커밋과 PR 검토를 거치는 �
 
 ### 병합 방식의 선택
 
-11/24 main PR에 **Rebase and merge**를 기본으로 채택했다. 여러 작은 커밋의 의미를 보존하면서 선형 이력을 얻는다. Squash는 작은 변경별 이력을 합치므로 기본 목적에 덜 맞고, Merge commit은 SHA와 병합 경계를 보존하는 대신 병합 커밋이 추가된다. 공유 의존이나 복잡한 통합 이력이 있는 경우에는 Merge commit 예외를 검토할 수 있다.
+11/24 main PR에 **Rebase and merge**를 기본으로 채택했다. 여러 작은 커밋의 의미를 보존하면서 선형 이력을 얻는다. Squash는 작은 변경별 이력을 합치므로 기본 목적에 덜 맞고, Merge commit은 SHA와 병합 경계를 보존하는 대신 병합 커밋이 추가된다. 당시 공유 의존이나 복잡한 통합 이력에 대한 Merge commit 예외를 검토했으나, 11/25 두 저장소가 rebase만 허용하도록 설정됐다. 다른 방식을 실제 사용하려면 별도 정책 검토가 필요하며 현재 절차에서 자동 선택하지 않는다.
 
 GitHub의 rebase 병합은 새 SHA를 만든다. 따라서 코드/WIKI를 실제 PR로 연결하고 병합 후 최종 main SHA를 확인한다. 병합 전 식별자를 최종 적용 버전으로 고정하지 않는다. 공유 main/통합 브랜치를 임의로 rebase하거나 강제 push하는 운영은 채택하지 않았다. 충돌 해결 뒤 바뀐 결과는 관련 검증을 다시 받아야 한다.
 
-이번에 합의한 것은 개발 운영 기준이다. 원격 병합 옵션/보호 규칙, 실제 PR 생성과 병합 결과는 아직 확인하지 않았다. 실제로 불가능한 rebase를 억지로 수행하거나 규칙 충돌을 자동 우회하지 않는다.
+11/25 원격 조회에서 두 저장소의 rebase 단독 허용, main 삭제/강제 push 차단, 선형 이력과 PR 요구, 미해결 대화 차단을 확인했다. 필수 승인 수는 0이며 필수 CI는 아직 없다. 관리자가 PR을 검토해 직접 병합하고, 실제 반영 결과를 확인해 공통 작업을 마감한다. 첫 코드/WIKI PR 생성과 정식 이슈 연결은 확인했으며 실제 병합은 검토 대기다. 현재 운영 규약은 위 CONTRIBUTING이 소유한다. 실제로 불가능한 rebase를 억지로 수행하거나 규칙 충돌을 자동 우회하지 않는다.
 
 근거: [GitHub flow](https://docs.github.com/en/get-started/using-github/github-flow), [Git workflows](https://git-scm.com/docs/gitworkflows), [Gitflow 원문](https://nvie.com/posts/a-successful-git-branching-model/), [작은 변경의 검토](https://google.github.io/eng-practices/review/developer/small-cls.html), [GitHub 병합 방식](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/about-merge-methods-on-github).
 
