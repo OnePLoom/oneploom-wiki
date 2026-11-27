@@ -2,7 +2,7 @@
 
 - 날짜: 2026-10-28
 - 설계 상태: `accepted` — 2026-11-23 main과 작업 브랜치를 채택했고, 11/24 필요한 경우의 임시 통합 브랜치와 main PR의 Rebase and merge를 보완 채택했다. 실제 원격 운영과 병합 검증은 별도다.
-- 구현 및 검증: 첫 작업 브랜치와 커밋/push, 코드/WIKI PR의 이슈 연결 및 Project 등록을 확인했다. 실제 병합과 그 이후 마감은 미실행이다.
+- 구현 및 검증: 첫 작업 브랜치와 커밋/push, 코드/WIKI PR의 이슈 연결 및 Project 등록을 확인했다. 2026-11-27 양쪽 PR의 Rebase and merge와 최종 반영 내용, 공통 이슈 종료 및 Project Done까지 확인했다. 제품의 원격 연계 기능이나 무인 마감 구현을 뜻하지 않는다.
 - 적용 범위: OnepLoom 코드와 개발 WIKI의 운영. 소비 프로젝트의 기존 브랜치와 이력은 해당 프로젝트의 정책에 따라 다룬다.
 - 상세 운영 규약: 코드 CONTRIBUTING. 이 ADR은 대안, 채택 이유와 이력 보존의 판단을 기록한다.
 
@@ -46,7 +46,7 @@ GitHub flow는 작업 브랜치에서 여러 커밋과 PR 검토를 거치는 �
 
 GitHub의 rebase 병합은 새 SHA를 만든다. 따라서 코드/WIKI를 실제 PR로 연결하고 병합 후 최종 main SHA를 확인한다. 병합 전 식별자를 최종 적용 버전으로 고정하지 않는다. 공유 main/통합 브랜치를 임의로 rebase하거나 강제 push하는 운영은 채택하지 않았다. 충돌 해결 뒤 바뀐 결과는 관련 검증을 다시 받아야 한다.
 
-11/25 원격 조회에서 두 저장소의 rebase 단독 허용, main 삭제/강제 push 차단, 선형 이력과 PR 요구, 미해결 대화 차단을 확인했다. 필수 승인 수는 0이며 필수 CI는 아직 없다. 관리자가 PR을 검토해 직접 병합하고, 실제 반영 결과를 확인해 공통 작업을 마감한다. 첫 코드/WIKI PR 생성과 정식 이슈 연결은 확인했으며 실제 병합은 검토 대기다. 현재 운영 규약은 위 CONTRIBUTING이 소유한다. 실제로 불가능한 rebase를 억지로 수행하거나 규칙 충돌을 자동 우회하지 않는다.
+11/25 원격 조회에서 두 저장소의 rebase 단독 허용, main 삭제/강제 push 차단, 선형 이력과 PR 요구, 미해결 대화 차단을 확인했다. 당시 필수 승인 수는 0이며 필수 CI는 없었다. 첫 코드/WIKI PR 생성과 정식 이슈 연결 뒤 검토를 기다렸고, 11/27 관리자가 코드 PR과 WIKI PR 순서로 병합했다. 병합 후 최종 커밋과 반영 내용을 대조하고 공통 이슈/Project의 완료 상태를 확인했다. 실제 값은 [첫 구현 기록 — 「병합과 작업 마감」](../../evidence/experiments/runtime/2026-11-25_16-13-58-project-discovery.md)에 둔다. 현재 운영 규약은 위 CONTRIBUTING이 소유한다. 실제로 불가능한 rebase를 억지로 수행하거나 규칙 충돌을 자동 우회하지 않는다.
 
 근거: [GitHub flow](https://docs.github.com/en/get-started/using-github/github-flow), [Git workflows](https://git-scm.com/docs/gitworkflows), [Gitflow 원문](https://nvie.com/posts/a-successful-git-branching-model/), [작은 변경의 검토](https://google.github.io/eng-practices/review/developer/small-cls.html), [GitHub 병합 방식](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/about-merge-methods-on-github).
 
@@ -56,7 +56,7 @@ GitHub의 rebase 병합은 새 SHA를 만든다. 따라서 코드/WIKI를 실제
 - 텍스트 충돌 여부와 main의 기능 보존을 각각 검증한다. 기존 코드, 계약, WIKI/ADR, 도구 연결을 범위별로 대조한다.
 - 제품 회귀, 문서 보존, native hook/skill 연결의 결과를 남긴다. 확정 boot 예외를 모든 프로젝트에 확대하거나 PASS로 기록하지 않는다.
 - 끝점, 설정, 직접 입력이 바뀌면 관련 PASS 효력을 재판단한다. 계획, 미실행, 미분류는 완료 증거가 아니다.
-- 실제 원격 갱신, branch 생성, merge, push는 개발 범위 확정 뒤 수행한다. 이번 문서화에서 실행하지 않았다.
+- 실제 원격 갱신, branch 생성, merge, push는 합의한 개발 범위에서 수행한다. 첫 발견 단위에서 확인한 결과는 위 병합 기록으로 연결하고, 미구현 기능의 완료 근거로 확대하지 않는다.
 
 ## 작업 단위와 시작점
 

@@ -96,6 +96,21 @@ py -3 -B -X utf8 -W error::DeprecationWarning -m unittest discover -s tests -v
 
 일반적인 작업 폴더 여부를 판정하기 전에 Git이 보고한 루트와 요청 위치를 대조하도록 공통 조회 순서를 수정했다. 같은 59개 전체 검사를 다시 실행해 모두 통과했다. 검사를 삭제하거나 기대 원인을 일반 오류로 완화하지 않았다.
 
+## 병합과 작업 마감
+
+2026-11-27 코드 PR을 먼저, WIKI PR을 다음에 Rebase and merge했다. PR 검토 대상의 마지막 커밋과 병합 후 커밋은 식별자가 다르지만, 두 저장소 모두 전체 파일 내용이 같은 것을 Git tree로 대조했다. 아래 시각은 실제 GitHub 병합 시각을 KST로 표시한 값이다.
+
+| 저장소 | 병합된 PR | 최종 반영 커밋 | 병합 시각 |
+| --- | --- | --- | --- |
+| 코드 | [PR #2](https://github.com/OnePLoom/oneploom/pull/2) | [bdcb402](https://github.com/OnePLoom/oneploom/commit/bdcb402ff4eb0a220c701e5b9663d1716c579179) | 2026-11-27 09:47:59 KST |
+| WIKI | [PR #1](https://github.com/OnePLoom/oneploom-wiki/pull/1) | [3934292](https://github.com/OnePLoom/oneploom-wiki/commit/3934292da727b753f02266c37ef428f2f27fabea) | 2026-11-27 09:48:23 KST |
+
+[공통 이슈 #1](https://github.com/OnePLoom/oneploom/issues/1)은 두 PR과 정식으로 연결되어 있으며, 필요한 두 PR의 병합 후 `CLOSED/COMPLETED`와 [OnePLoom Project](https://github.com/orgs/OnePLoom/projects/2)의 `Done` 상태를 확인했다. [작업 진행 기록](https://github.com/OnePLoom/oneploom/issues/1#issuecomment-7155285671)에서도 양쪽 최종 커밋을 확인할 수 있다.
+
+검증 기준 커밋 632cbf8과 최종 코드 커밋의 `oneploom/`, `tests/` 내용은 같다. 위 Windows 검사 59개는 동일한 입력의 기존 결과를 재사용한 것이며 병합 뒤 새로 실행한 검사로 표시하지 않는다. 원래 검사 환경, 실패 후 수정 과정과 미실행 범위도 그대로 보존한다.
+
+이번 마감은 OnepLoom 개발 작업의 Git 운영 결과다. 제품의 원격 PR 연계, 무인 이슈 마감, 필수 CI나 설치/실행 연결 기능의 구현 완료를 뜻하지 않는다.
+
 ## 확인 방식과 남은 범위
 
 | 범위 | 상태 |
