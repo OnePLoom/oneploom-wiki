@@ -4,6 +4,7 @@
 
 | 문서 | 위치 |
 | --- | --- |
+| [커밋 단위의 공개 사례와 OnepLoom의 선택](development/commit-boundaries.md) | `discussions/development/commit-boundaries.md` |
 | [현재 조건부 하네스 구조 감사](architecture/baseline-audit.md) | `discussions/architecture/baseline-audit.md` |
 | [조건부 하네스의 차별성과 기술 대안](architecture/alternatives.md) | `discussions/architecture/alternatives.md` |
 | [개발 요구 검토](knowledge/requirements.md) | `discussions/knowledge/requirements.md` |
