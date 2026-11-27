@@ -1,0 +1,505 @@
+{
+  "observed_on": "2026-11-26",
+  "method": "Three repositories, 30 recently updated closed PRs per repository; six purposively selected merged PRs. Not a random or latest-merge sample.",
+  "source_endpoints": [
+    "https://api.github.com/repos/{repository}/pulls?state=closed&sort=updated&direction=desc&per_page=30",
+    "https://api.github.com/repos/{repository}/pulls/{number}",
+    "https://api.github.com/repos/{repository}/pulls/{number}/commits?per_page=100",
+    "https://api.github.com/repos/{repository}/pulls/{number}/files?per_page=100",
+    "https://api.github.com/repos/{repository}/commits/{sha}"
+  ],
+  "samples": [
+    {
+      "repository": "microsoft/vscode",
+      "number": 350497,
+      "url": "https://github.com/microsoft/vscode/pull/350497",
+      "title": "sessions: request workspace trust for remote session creation",
+      "merged_at": "2026-11-26T10:27:51Z",
+      "pr_commit_count": 3,
+      "changed_file_count": 5,
+      "commits": [
+        {
+          "sha": "26840699484affa385def8c08635e457949f18da",
+          "url": "https://github.com/microsoft/vscode/commit/26840699484affa385def8c08635e457949f18da"
+        },
+        {
+          "sha": "368375d9a24784c9746b96d0b073891de742659f",
+          "url": "https://github.com/microsoft/vscode/commit/368375d9a24784c9746b96d0b073891de742659f"
+        },
+        {
+          "sha": "171cbd0af430897f047e7ac6a268fc5e869a91c2",
+          "url": "https://github.com/microsoft/vscode/commit/171cbd0af430897f047e7ac6a268fc5e869a91c2"
+        }
+      ],
+      "files": [
+        {
+          "path": "src/vs/sessions/SESSIONS.md",
+          "status": "modified",
+          "additions": 1,
+          "deletions": 1
+        },
+        {
+          "path": "src/vs/sessions/contrib/remoteSessions/browser/remoteSessionService.ts",
+          "status": "modified",
+          "additions": 45,
+          "deletions": 23
+        },
+        {
+          "path": "src/vs/sessions/contrib/remoteSessions/browser/remoteSessionTools.ts",
+          "status": "modified",
+          "additions": 1,
+          "deletions": 1
+        },
+        {
+          "path": "src/vs/sessions/contrib/remoteSessions/test/browser/remoteSessionService.test.ts",
+          "status": "modified",
+          "additions": 73,
+          "deletions": 10
+        },
+        {
+          "path": "src/vs/sessions/contrib/remoteSessions/test/browser/remoteSessionTools.test.ts",
+          "status": "modified",
+          "additions": 1,
+          "deletions": 1
+        }
+      ],
+      "landed": {
+        "sha": "6dd0c04802f2157868ccd302f516f6cf426a79aa",
+        "url": "https://github.com/microsoft/vscode/commit/6dd0c04802f2157868ccd302f516f6cf426a79aa",
+        "parent_shas": [
+          "dc1613101e2c57223118020b518e175fcbe6624d"
+        ],
+        "stats": {
+          "total": 157,
+          "additions": 121,
+          "deletions": 36
+        }
+      },
+      "complete_pr_commit_list": true,
+      "complete_file_list": true,
+      "ci_execution_or_full_semantic_audit_performed": false
+    },
+    {
+      "repository": "microsoft/vscode",
+      "number": 350519,
+      "url": "https://github.com/microsoft/vscode/pull/350519",
+      "title": "workspace: add WorkbenchMode (Editor | Agents) and the workbenchMode proposed API",
+      "merged_at": "2026-11-26T10:20:33Z",
+      "pr_commit_count": 2,
+      "changed_file_count": 24,
+      "commits": [
+        {
+          "sha": "f9dd5919ab4348402333ee5856ebc0d8e9bb0006",
+          "url": "https://github.com/microsoft/vscode/commit/f9dd5919ab4348402333ee5856ebc0d8e9bb0006"
+        },
+        {
+          "sha": "6f260f87ef85356f4a4436380abf37470b2a2aaf",
+          "url": "https://github.com/microsoft/vscode/commit/6f260f87ef85356f4a4436380abf37470b2a2aaf"
+        }
+      ],
+      "files": [
+        {
+          "path": "extensions/vscode-api-tests/package.json",
+          "status": "modified",
+          "additions": 2,
+          "deletions": 1
+        },
+        {
+          "path": "src/vs/editor/contrib/snippet/test/browser/snippetVariables.test.ts",
+          "status": "modified",
+          "additions": 3,
+          "deletions": 1
+        },
+        {
+          "path": "src/vs/editor/standalone/browser/standaloneServices.ts",
+          "status": "modified",
+          "additions": 6,
+          "deletions": 1
+        },
+        {
+          "path": "src/vs/platform/extensions/common/extensionsApiProposals.ts",
+          "status": "modified",
+          "additions": 3,
+          "deletions": 0
+        },
+        {
+          "path": "src/vs/platform/workspace/common/workspace.ts",
+          "status": "modified",
+          "additions": 20,
+          "deletions": 0
+        },
+        {
+          "path": "src/vs/workbench/api/browser/mainThreadWorkspace.ts",
+          "status": "modified",
+          "additions": 2,
+          "deletions": 0
+        },
+        {
+          "path": "src/vs/workbench/api/common/extHost.api.impl.ts",
+          "status": "modified",
+          "additions": 9,
+          "deletions": 0
+        },
+        {
+          "path": "src/vs/workbench/api/common/extHostTypeConverters.ts",
+          "status": "modified",
+          "additions": 13,
+          "deletions": 0
+        },
+        {
+          "path": "src/vs/workbench/api/common/extHostTypes.ts",
+          "status": "modified",
+          "additions": 5,
+          "deletions": 0
+        },
+        {
+          "path": "src/vs/workbench/api/common/extHostWorkspace.ts",
+          "status": "modified",
+          "additions": 17,
+          "deletions": 1
+        },
+        {
+          "path": "src/vs/workbench/api/test/browser/extHostWorkspace.test.ts",
+          "status": "modified",
+          "additions": 16,
+          "deletions": 1
+        },
+        {
+          "path": "src/vs/workbench/api/test/browser/mainThreadWorkspace.test.ts",
+          "status": "modified",
+          "additions": 9,
+          "deletions": 3
+        },
+        {
+          "path": "src/vs/workbench/browser/contextkeys.ts",
+          "status": "modified",
+          "additions": 11,
+          "deletions": 2
+        },
+        {
+          "path": "src/vs/workbench/common/contextkeys.ts",
+          "status": "modified",
+          "additions": 1,
+          "deletions": 0
+        },
+        {
+          "path": "src/vs/workbench/contrib/terminalContrib/chatAgentTools/test/browser/terminalSandboxService.test.ts",
+          "status": "modified",
+          "additions": 5,
+          "deletions": 1
+        },
+        {
+          "path": "src/vs/workbench/services/configuration/browser/agents/agentsWorkspaceContextService.ts",
+          "status": "modified",
+          "additions": 6,
+          "deletions": 1
+        },
+        {
+          "path": "src/vs/workbench/services/configuration/browser/configurationService.ts",
+          "status": "modified",
+          "additions": 6,
+          "deletions": 1
+        },
+        {
+          "path": "src/vs/workbench/services/extensions/browser/webWorkerExtensionHost.ts",
+          "status": "modified",
+          "additions": 2,
+          "deletions": 1
+        },
+        {
+          "path": "src/vs/workbench/services/extensions/common/extensionHostProtocol.ts",
+          "status": "modified",
+          "additions": 5,
+          "deletions": 0
+        },
+        {
+          "path": "src/vs/workbench/services/extensions/common/remoteExtensionHost.ts",
+          "status": "modified",
+          "additions": 2,
+          "deletions": 1
+        },
+        {
+          "path": "src/vs/workbench/services/extensions/electron-browser/localProcessExtensionHost.ts",
+          "status": "modified",
+          "additions": 2,
+          "deletions": 1
+        },
+        {
+          "path": "src/vs/workbench/test/browser/contextkeys.test.ts",
+          "status": "modified",
+          "additions": 18,
+          "deletions": 4
+        },
+        {
+          "path": "src/vs/workbench/test/common/workbenchTestServices.ts",
+          "status": "modified",
+          "additions": 6,
+          "deletions": 1
+        },
+        {
+          "path": "src/vscode-dts/vscode.proposed.workbenchMode.d.ts",
+          "status": "added",
+          "additions": 34,
+          "deletions": 0
+        }
+      ],
+      "landed": {
+        "sha": "e808306a7048af019cca8517779afad45a600394",
+        "url": "https://github.com/microsoft/vscode/commit/e808306a7048af019cca8517779afad45a600394",
+        "parent_shas": [
+          "8ea0620d6c78cc5e23a162d9066e8ed8ba7c46f3"
+        ],
+        "stats": {
+          "total": 224,
+          "additions": 203,
+          "deletions": 21
+        }
+      },
+      "complete_pr_commit_list": true,
+      "complete_file_list": true,
+      "ci_execution_or_full_semantic_audit_performed": false
+    },
+    {
+      "repository": "python/cpython",
+      "number": 162665,
+      "url": "https://github.com/python/cpython/pull/162665",
+      "title": "gh-92810: Clear the ABC cache in `_abc._reset_registry`",
+      "merged_at": "2026-11-26T07:25:34Z",
+      "pr_commit_count": 1,
+      "changed_file_count": 1,
+      "commits": [
+        {
+          "sha": "ec9c9080348efc6f29436ea66ae3e84da797e1df",
+          "url": "https://github.com/python/cpython/commit/ec9c9080348efc6f29436ea66ae3e84da797e1df"
+        }
+      ],
+      "files": [
+        {
+          "path": "Modules/_abc.c",
+          "status": "modified",
+          "additions": 3,
+          "deletions": 0
+        }
+      ],
+      "landed": {
+        "sha": "d43a97527b32332d1e5df7854a5d8cd852bb7206",
+        "url": "https://github.com/python/cpython/commit/d43a97527b32332d1e5df7854a5d8cd852bb7206",
+        "parent_shas": [
+          "c0ee4bb03e35c778ca4f0367db1948c56b42234f"
+        ],
+        "stats": {
+          "total": 3,
+          "additions": 3,
+          "deletions": 0
+        }
+      },
+      "complete_pr_commit_list": true,
+      "complete_file_list": true,
+      "ci_execution_or_full_semantic_audit_performed": false
+    },
+    {
+      "repository": "python/cpython",
+      "number": 162361,
+      "url": "https://github.com/python/cpython/pull/162361",
+      "title": "gh-92810: Lock-free cache implementation for ABCMeta",
+      "merged_at": "2026-11-26T05:15:20Z",
+      "pr_commit_count": 7,
+      "changed_file_count": 10,
+      "commits": [
+        {
+          "sha": "edf2543372e96439274be5f4ad163abb84a3ede0",
+          "url": "https://github.com/python/cpython/commit/edf2543372e96439274be5f4ad163abb84a3ede0"
+        },
+        {
+          "sha": "859a57e21c856e782b032945209fe86dc1e5adcd",
+          "url": "https://github.com/python/cpython/commit/859a57e21c856e782b032945209fe86dc1e5adcd"
+        },
+        {
+          "sha": "a7273de1ab7374c04f55bc3f5bc2bb103eca2f9a",
+          "url": "https://github.com/python/cpython/commit/a7273de1ab7374c04f55bc3f5bc2bb103eca2f9a"
+        },
+        {
+          "sha": "8b5148b2a219c6e2cf6c50f260c17f32651c71f8",
+          "url": "https://github.com/python/cpython/commit/8b5148b2a219c6e2cf6c50f260c17f32651c71f8"
+        },
+        {
+          "sha": "dc50cfe7dc369e8f8cd95bedfc217d32b1e14e6f",
+          "url": "https://github.com/python/cpython/commit/dc50cfe7dc369e8f8cd95bedfc217d32b1e14e6f"
+        },
+        {
+          "sha": "0793896b83f219f1094ae61578c46bfa0ee99ea5",
+          "url": "https://github.com/python/cpython/commit/0793896b83f219f1094ae61578c46bfa0ee99ea5"
+        },
+        {
+          "sha": "a2a1be63e0c7a94b213e356588dc176fcef61495",
+          "url": "https://github.com/python/cpython/commit/a2a1be63e0c7a94b213e356588dc176fcef61495"
+        }
+      ],
+      "files": [
+        {
+          "path": "Include/internal/pycore_global_objects_fini_generated.h",
+          "status": "modified",
+          "additions": 1,
+          "deletions": 0
+        },
+        {
+          "path": "Include/internal/pycore_global_strings.h",
+          "status": "modified",
+          "additions": 1,
+          "deletions": 0
+        },
+        {
+          "path": "Include/internal/pycore_runtime_init_generated.h",
+          "status": "modified",
+          "additions": 1,
+          "deletions": 0
+        },
+        {
+          "path": "Include/internal/pycore_unicodeobject_generated.h",
+          "status": "modified",
+          "additions": 1,
+          "deletions": 0
+        },
+        {
+          "path": "Lib/abc.py",
+          "status": "modified",
+          "additions": 5,
+          "deletions": 1
+        },
+        {
+          "path": "Lib/test/test_abc.py",
+          "status": "modified",
+          "additions": 138,
+          "deletions": 0
+        },
+        {
+          "path": "Lib/test/test_free_threading/test_abc.py",
+          "status": "added",
+          "additions": 103,
+          "deletions": 0
+        },
+        {
+          "path": "Misc/NEWS.d/next/Library/2026-09-15-10-30-00.gh-issue-92810.Kx3abc.rst",
+          "status": "added",
+          "additions": 4,
+          "deletions": 0
+        },
+        {
+          "path": "Modules/_abc.c",
+          "status": "modified",
+          "additions": 762,
+          "deletions": 363
+        },
+        {
+          "path": "Modules/clinic/_abc.c.h",
+          "status": "modified",
+          "additions": 13,
+          "deletions": 1
+        }
+      ],
+      "landed": {
+        "sha": "c0ee4bb03e35c778ca4f0367db1948c56b42234f",
+        "url": "https://github.com/python/cpython/commit/c0ee4bb03e35c778ca4f0367db1948c56b42234f",
+        "parent_shas": [
+          "87fc280d3129ff521d082026278fe9bc8e6aeec8"
+        ],
+        "stats": {
+          "total": 1394,
+          "additions": 1029,
+          "deletions": 365
+        }
+      },
+      "complete_pr_commit_list": true,
+      "complete_file_list": true,
+      "ci_execution_or_full_semantic_audit_performed": false
+    },
+    {
+      "repository": "llvm/llvm-project",
+      "number": 237907,
+      "url": "https://github.com/llvm/llvm-project/pull/237907",
+      "title": "[Clang][OpenMP][test] Add flatten empty-loop final value tests",
+      "merged_at": "2026-11-26T09:48:49Z",
+      "pr_commit_count": 1,
+      "changed_file_count": 2,
+      "commits": [
+        {
+          "sha": "c4e47dfe69be4f273afc8d482af0efa81477405c",
+          "url": "https://github.com/llvm/llvm-project/commit/c4e47dfe69be4f273afc8d482af0efa81477405c"
+        }
+      ],
+      "files": [
+        {
+          "path": "clang/test/OpenMP/flatten_codegen.cpp",
+          "status": "modified",
+          "additions": 19,
+          "deletions": 0
+        },
+        {
+          "path": "openmp/runtime/test/transform/flatten/final-values.c",
+          "status": "modified",
+          "additions": 37,
+          "deletions": 0
+        }
+      ],
+      "landed": {
+        "sha": "fb232785d24b647d2e5962f33a95a45c2fa5571d",
+        "url": "https://github.com/llvm/llvm-project/commit/fb232785d24b647d2e5962f33a95a45c2fa5571d",
+        "parent_shas": [
+          "5ddbb1d9fa3579e46c531484eeb7a62e84e368ca"
+        ],
+        "stats": {
+          "total": 56,
+          "additions": 56,
+          "deletions": 0
+        }
+      },
+      "complete_pr_commit_list": true,
+      "complete_file_list": true,
+      "ci_execution_or_full_semantic_audit_performed": false
+    },
+    {
+      "repository": "llvm/llvm-project",
+      "number": 242381,
+      "url": "https://github.com/llvm/llvm-project/pull/242381",
+      "title": "[clang][bytecode] Fix ambiguous base casts for covariant return types",
+      "merged_at": "2026-11-26T10:18:45Z",
+      "pr_commit_count": 1,
+      "changed_file_count": 2,
+      "commits": [
+        {
+          "sha": "50b9f6f6c76c631ca32a3b0442732a45c6204bba",
+          "url": "https://github.com/llvm/llvm-project/commit/50b9f6f6c76c631ca32a3b0442732a45c6204bba"
+        }
+      ],
+      "files": [
+        {
+          "path": "clang/lib/AST/ByteCode/Interp.cpp",
+          "status": "modified",
+          "additions": 37,
+          "deletions": 6
+        },
+        {
+          "path": "clang/test/AST/ByteCode/cxx2a.cpp",
+          "status": "modified",
+          "additions": 39,
+          "deletions": 17
+        }
+      ],
+      "landed": {
+        "sha": "f084cfcb6e4874f45e8541d2a4646e7826d1465f",
+        "url": "https://github.com/llvm/llvm-project/commit/f084cfcb6e4874f45e8541d2a4646e7826d1465f",
+        "parent_shas": [
+          "8927ff790b5f32f8bf48569b9a73bf371e9be4b2"
+        ],
+        "stats": {
+          "total": 99,
+          "additions": 76,
+          "deletions": 23
+        }
+      },
+      "complete_pr_commit_list": true,
+      "complete_file_list": true,
+      "ci_execution_or_full_semantic_audit_performed": false
+    }
+  ]
+}
