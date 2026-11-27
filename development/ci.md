@@ -56,13 +56,18 @@ PR은 병합 대상과 합쳐질 변경을 검사하고, main push는 실제 반
 
 | 방식 | 장점 | 고려할 점과 현재 판단 |
 | --- | --- | --- |
-| `@v7` 또는 `@v7.0.1` 태그 | 읽기 쉽고 짧음 | 태그가 가리키는 코드가 바뀔 수 있음 |
-| 전체 SHA와 버전 주석 | 실행 코드를 지정하면서 사람이 버전을 읽을 수 있음 | 버전 변경 때 SHA/주석과 호환성 검토 필요. 현재 사용 |
+| 메이저 태그 `@v7` | 읽기 쉽고 같은 메이저의 수정 사항을 자동으로 받음 | 실행 코드가 바뀌며 회귀 오류 가능성은 남음. 현재 공식 테스트 Action 두 개에 사용 |
+| 구체 릴리스 태그 `@v7.0.1` | 선택한 릴리스가 명확함 | 후속 수정은 직접 반영해야 하며 일반 태그의 이동 가능성은 별도 고려 |
+| 전체 SHA와 버전 주석 | 실행할 커밋을 고정하면서 사람이 버전을 읽을 수 있음 | 자동 수정 수신을 멈추므로 SHA/주석 갱신과 검토가 필요 |
 | 태그와 Actions 의존성 lockfile | 태그의 가독성과 잠긴 실행 코드/의존성 확인을 함께 제공 | 현재 공식 사용 조건이 GitHub Enterprise Cloud이므로 Free 운영에 도입하지 않음 |
 
-전체 SHA는 비밀 토큰이 아니라 공개 커밋 식별자다. 위 Requests와 pip의 실제 workflow에서도 SHA와 버전 주석을 함께 사용한다. [GitHub의 보안 지침](https://docs.github.com/en/actions/reference/security/secure-use)은 lockfile 적용이 어려울 때 전체 SHA 고정을 안내한다. [lockfile의 공식 사용 조건](https://docs.github.com/en/actions/how-tos/secure-your-work/lock-workflow-dependencies)을 확인해 현재 운영에 맞는 SHA 방식을 유지했다. 이를 모든 프로젝트에 유일한 정답이라고 일반화하지 않는다.
+현재는 `actions/checkout@v7`과 `actions/setup-python@v7`을 선택한다. [GitHub의 Action 릴리스 안내](https://docs.github.com/en/actions/how-tos/create-and-publish-actions/manage-custom-actions#using-release-management-for-actions)와 [공식 Actions 버전 운영 안내](https://github.com/actions/toolkit/blob/main/docs/action-versioning.md)는 같은 메이저의 호환되는 수정 사항을 받고, 문제가 있을 때 구체 릴리스나 SHA 고정을 검토하는 흐름을 설명한다. 메이저 태그는 새 메이저로 자동 전환되지 않는다.
 
-갱신할 때는 공식 저장소의 릴리스와 커밋 대응, 변경 내용과 라이선스를 확인하고 SHA/버전 주석을 함께 바꾼다. SHA 고정은 해당 커밋의 무결성 선택이며 코드 자체의 무결함이나 자동 보안 업데이트를 보장하지 않는다.
+OnepLoom의 현재 CI는 공식 Action 두 개로 검사만 수행하고 저장소 쓰기 권한, 사용자 Secret과 배포 단계를 갖지 않는다. 이 범위에서는 실행 커밋을 매번 수동 갱신하는 비용보다 같은 메이저의 수정 수신과 간결한 유지관리를 우선한다. 초안의 SHA 고정 권고는 실행 코드의 고정에 무게를 두었지만 현재 운영 범위를 다시 대조해 변경했다. 향후 배포나 외부 Action을 추가할 때는 해당 권한과 위험에 맞춰 별도로 평가한다.
+
+SHA 고정도 정상적인 보안 관례다. 위 Requests와 pip의 실제 workflow에서도 사용하며, [GitHub 보안 지침](https://docs.github.com/en/actions/reference/security/secure-use)은 변경 가능한 태그보다 고정한 실행 코드의 장점을 설명한다. 전체 SHA는 비밀 토큰이 아닌 공개 커밋 식별자이며 호환성보다 코드가 바뀌지 않는다는 보장을 위한 선택이다. 반대로 메이저 태그의 호환성 원칙은 회귀 오류나 실행기 변경의 영향을 없애지는 않는다. 실패하면 원인을 확인한 뒤 필요한 경우 정상 동작한 릴리스나 SHA로 일시 고정한다. 읽기 권한만 부여해도 실행 코드를 신뢰해야 하는 위험은 남는다.
+
+[Actions 의존성 lockfile](https://docs.github.com/en/actions/how-tos/secure-your-work/lock-workflow-dependencies)은 현재 공식 사용 조건이 GitHub Enterprise Cloud이므로 Free 운영에 도입하지 않는다. 태그 선택을 이유로 모든 외부 도구의 고정 정책을 일괄 바꾸지 않는다.
 
 ### 검증 작업의 최소 권한
 
@@ -82,6 +87,7 @@ checkout의 자격증명 보존은 끄고 사용자 PAT, 다른 저장소 토큰
 | 전체 테스트 | 공통 진입점으로 기존 59개와 실행기 회귀 검사 10개, 총 69개 통과. 실패/건너뜀 없음. 테스트 실행 6.400초 |
 | 실패 전달 | 정상, 빈 검사, assertion 실패, 단독/혼합 건너뜀, import/setUp 오류, 폐기 예정 API 경고와 중단을 실제 Python 자식 프로세스로 확인. 필수 도구가 없을 때와 다른 작업 폴더에서의 진입도 확인 |
 | 정적 구문 | actionlint 1.7.12에서 workflow 오류 없음 |
+| Action 참조 변경 | 2026-11-28 공식 Git 참조 조회에서 두 `v7` 태그가 각각 기존에 확인한 checkout v7.0.1, setup-python v7.1.0의 커밋과 같음. 이후 태그 이동까지 보장하는 결과는 아님 |
 | 비밀값 탐지 | Gitleaks CLI 8.30.1로 공개 대상 파일과 로컬에서 접근 가능한 양쪽 Git 이력을 검사. 탐지/검사 오류 없음. 배포 CI로 추가한 것은 아님 |
 | 원격 실행 | 아직 미실행. PR의 실제 실행 결과 확인 필요 |
 | 필수 검사 | 아직 미등록. 성공 결과와 실제 check 이름을 확인한 뒤 등록 |
@@ -89,6 +95,8 @@ checkout의 자격증명 보존은 끄고 사용자 PAT, 다른 저장소 토큰
 초안의 첫 로컬 실행에서는 WSL에서 Windows로 전달한 Python 환경 변수 세 개가 누락돼 경고 오류화 조건이 적용되지 않았다. Windows 프로세스에서 환경을 구성하도록 시험 실행부를 수정한 뒤 기존 59개와 합성 입력 6개 전체를 다시 확인했다. 이후 실행기 분리에서는 로컬/CI 명령의 Python 실행 옵션으로 바꾸고 위 69개를 다시 확인했다. 과거 결과를 새 실행기의 검증으로 대신하지 않았으며 두 실행의 테스트 수가 달라 속도 개선으로 비교하지 않는다.
 
 정적 구문 검사는 GitHub의 권한, 실행기 준비, 이벤트 발동이나 필수 검사 연결을 증명하지 않는다. 다음 단계에서 최신 제출의 실제 GitHub 성공과 main 보호 설정을 확인한다. 실행 방법과 실패 시 재실행 절차는 코드 CONTRIBUTING의 「Windows CI」를 따른다.
+
+Action 참조를 메이저 태그로 변경할 때는 제품 코드, 테스트와 공통 검사 진입점이 그대로임을 확인해 위 69개 결과를 재사용한다. workflow 구문 검사는 변경 후 다시 수행하며 실제 GitHub 실행은 여전히 미확인이다.
 
 ## 외부 도구와 고지
 
