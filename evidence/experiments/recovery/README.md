@@ -12,3 +12,4 @@
 - [유지 관리 이력의 행 순서 검사](2026-11-17_10-01-07-maintenance-handoff.md)
 - [최초 DB 위치 전환 B의 메모리 검사](2026-11-17_11-21-50-handoff-snapshot.md)
 - [Windows 파일 DB의 연결과 트랜잭션](2026-11-28_17-57-33-state-connection.md)
+- [Windows 파일 보호 읽기와 하드 링크의 한계](2026-11-28_20-15-24-file-protection.md)
