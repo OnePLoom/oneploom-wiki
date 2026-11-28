@@ -7,7 +7,7 @@
 | 검사 | 확인할 범위 | 현재 단계 |
 | --- | --- | --- |
 | 코드의 Windows tests | 기존 명령/프로젝트 발견 테스트 전체와 실패 전달 | GitHub 검사 성공과 main 필수 등록 완료. PR 병합 전 |
-| WIKI 내부 링크 | 저장소 내부 문서 파일과 섹션의 연결 | GitHub 첫 실행 실패. 루트 판별 수정의 로컬 검증 완료, 수정 커밋과 원격 재검증 전 |
+| WIKI 내부 링크 | 저장소 내부 문서 파일과 섹션의 연결 | 첫 실패를 수정한 뒤 GitHub 검사 성공과 main 필수 등록 완료. PR 병합 전 |
 
 작업의 범위와 전체 완료 조건은 [공통 이슈 4](https://github.com/OnePLoom/oneploom/issues/4)에 연결한다. 한쪽 로컬 검사가 끝났다는 이유로 두 저장소의 CI 구성이 완료됐다고 판단하지 않는다.
 
@@ -121,7 +121,7 @@ PR/main 이벤트, 이전 실행 취소, 저장소 읽기 권한과 초기 15분
 
 ## 검증 상태
 
-2026-11-28의 로컬 Windows 검사와 첫 GitHub 실행 결과다. 수정 후보의 로컬 검증을 원격 성공으로 계산하지 않는다.
+2026-11-28의 로컬 Windows 검사, 첫 GitHub 실행과 WIKI 수정 후 재검증 결과다. 로컬 결과와 원격 결과를 구분한다.
 
 | 확인 | 관측 |
 | --- | --- |
@@ -132,10 +132,10 @@ PR/main 이벤트, 이전 실행 취소, 저장소 읽기 권한과 초기 15분
 | Action 참조 변경 | 2026-11-28 공식 Git 참조 조회에서 두 `v7` 태그가 각각 기존에 확인한 checkout v7.0.1, setup-python v7.1.0의 커밋과 같음. 이후 태그 이동까지 보장하는 결과는 아님 |
 | 비밀값 탐지 | Gitleaks CLI 8.30.1로 공개 대상 파일과 로컬에서 접근 가능한 양쪽 Git 이력을 검사. 탐지/검사 오류 없음. 배포 CI로 추가한 것은 아님 |
 | WIKI 검사기 | 첫 Windows 11/Node.js 22.12.0 검사에서 24개 통과, 실패/건너뜀 없음. 테스트 3.841초. 원격 실패 뒤 루트 판별을 보완한 후보는 기존 24개와 새 경계 3개, 총 27개 통과. 실패/건너뜀 없음, 테스트 4.262초 |
-| WIKI 전체 문서 | Markdown 164개, 내부 링크 2,293개 확인, 오류 0개. 제목 원문 일치 177개를 별도 집계하고 외부 링크 1,043개는 제외 |
+| WIKI 전체 문서 | 첫 로컬 검사에서 Markdown 164개, 내부 링크 2,293개 확인, 오류 0개. 제목 원문 일치 177개를 별도 집계하고 외부 링크 1,043개는 제외. 결과 문서를 보완한 수정 커밋의 원격 검사는 아래에 구분 |
 | WIKI 준비/의존성 | npm ci 성공, 잠금 파일과 설치 파일 해시 보존. 8개 개발 패키지의 npm audit에서 알려진 취약점 0개. 보안 문제 전체의 부재를 보증하지 않음 |
-| 원격 실행 | 코드 69개 통과. WIKI는 24개 중 21개 실패, 3개 통과이며 전체 문서 검사는 실행되지 않음. 아래 실행 링크와 원인 검토 참고 |
-| 필수 검사 | 코드 main에 GitHub Actions의 Windows tests 등록 완료. WIKI는 실제 성공 후 등록 |
+| 원격 실행 | 코드 69개 통과. WIKI 첫 실행은 21개 실패/3개 통과, 전체 문서 검사 미실행. 수정 후 27개와 전체 문서 검사 통과. 아래 실제 실행 링크 참고 |
+| 필수 검사 | 코드 main의 Windows tests와 WIKI main의 Document links 등록 완료. 출처는 GitHub Actions이며 기존 보호 규칙 보존 확인 |
 
 초안의 첫 로컬 실행에서는 WSL에서 Windows로 전달한 Python 환경 변수 세 개가 누락돼 경고 오류화 조건이 적용되지 않았다. Windows 프로세스에서 환경을 구성하도록 시험 실행부를 수정한 뒤 기존 59개와 합성 입력 6개 전체를 다시 확인했다. 이후 실행기 분리에서는 로컬/CI 명령의 Python 실행 옵션으로 바꾸고 위 69개를 다시 확인했다. 과거 결과를 새 실행기의 검증으로 대신하지 않았으며 두 실행의 테스트 수가 달라 속도 개선으로 비교하지 않는다.
 
@@ -147,16 +147,19 @@ WIKI 검사기의 첫 회귀 검사에서 폴더 경로 끝의 `/`를 중복 처
 
 ### 첫 GitHub 실행과 준비 비용
 
-[코드 PR 5](https://github.com/OnePLoom/oneploom/pull/5)와 [WIKI PR 4](https://github.com/OnePLoom/oneploom-wiki/pull/4)의 첫 실행을 확인했다. 두 실행 모두 `pull_request` 이벤트와 Windows Server 2025 실행기를 사용했다.
+[코드 PR 5](https://github.com/OnePLoom/oneploom/pull/5)와 [WIKI PR 4](https://github.com/OnePLoom/oneploom-wiki/pull/4)의 첫 실행과 WIKI 수정 후 실행을 확인했다. 모두 `pull_request` 이벤트와 Windows Server 2025 실행기를 사용했다.
 
 | 실행 | 실제 결과 | 준비와 검사 시간 |
 | --- | --- | --- |
 | [Windows tests](https://github.com/OnePLoom/oneploom/actions/runs/46089684006) | Python 3.13.17, Git 2.56.1에서 69개 통과 | job 26초. checkout 7초, Python 준비 1초 미만, 검사 step 13초. 그 안의 테스트 실행 7.963초 |
-| [Document links](https://github.com/OnePLoom/oneploom-wiki/actions/runs/46089690847) | Node.js 22.23.5, Git 2.56.1에서 검사기 테스트 실패. 전체 WIKI 검사는 건너뜀 | job 28초. checkout 7초, Node 준비 5초, npm 설치 4초, 실패한 테스트 step 6초 |
+| [Document links 첫 실행](https://github.com/OnePLoom/oneploom-wiki/actions/runs/46089690847) | Node.js 22.23.5, Git 2.56.1에서 검사기 테스트 실패. 전체 WIKI 검사는 건너뜀 | job 28초. checkout 7초, Node 준비 5초, npm 설치 4초, 실패한 테스트 step 6초 |
+| [Document links 수정 후](https://github.com/OnePLoom/oneploom-wiki/actions/runs/46093640899) | 같은 Node.js/Git 버전에서 27개 통과, 실패/건너뜀 없음. 164문서/내부 링크 2,293개 오류 0, 제목 원문 177개와 외부 제외 1,050개 | job 32초. checkout 7초, Node 준비 5초, npm 설치 5초, 테스트 step 8초, 전체 링크 검사 2초. 테스트 실행 6.589초 |
 
-job과 step 시간은 GitHub API의 시작/종료 시각 차이며 대기열 시간은 포함하지 않는다. 한 번의 관측이고 WIKI는 실패 실행이므로 두 검사의 성능 비교나 정상 실행 상한으로 사용하지 않는다. 현재 작은 의존성 설치에 캐시를 추가할 근거는 부족하며, 수정 후 성공 실행의 시간도 확인한다.
+job과 step 시간은 GitHub API의 시작/종료 시각 차이며 대기열 시간은 포함하지 않는다. 각 결과는 한 번의 관측이고 첫 WIKI 실행은 실패했으므로 수정 전후의 속도 개선이나 정상 최악 시간으로 사용하지 않는다. 현재 성공 실행의 의존성 설치는 5초였고 검사 전체도 짧아, 별도 캐시나 변경 파일 판별기를 추가하지 않는다. 의존성과 실행 비용이 늘어나면 실제 설치/검사 시간을 다시 확인한다.
 
-코드의 `Windows tests`를 기존 main ruleset에 추가하고 기존 PR, 대화 해결, 선형 이력과 삭제/강제 push 방지 규칙을 보존했다. 결과 출처는 실제 성공을 보고한 GitHub Actions로 지정했다. 병합 전 최신 main을 포함하는 검사를 요구하는 기본 strict 방식을 사용한다. 다른 PR이 먼저 병합되면 작업 브랜치 최신화와 재검사가 필요할 수 있다. [GitHub의 strict/loose 비교](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets)를 따른다. WIKI 필수 등록은 수정본의 실제 GitHub 성공 후 진행한다.
+코드의 `Windows tests`와 WIKI의 `Document links`를 각각 기존 main ruleset에 추가하고 기존 PR, 대화 해결, 선형 이력과 삭제/강제 push 방지 규칙을 보존했다. 결과 출처는 실제 성공을 보고한 GitHub Actions로 지정했다. 병합 전 최신 main을 포함하는 검사를 요구하는 기본 strict 방식을 사용한다. 다른 PR이 먼저 병합되면 작업 브랜치 최신화와 재검사가 필요할 수 있다. [GitHub의 strict/loose 비교](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets)를 따른다.
+
+PR 생성과 수정 커밋의 실제 실행을 확인했다. 작업 브랜치 push의 별도 실행이 없고 PR에 경로 필터가 없다는 설정도 대조했다. 실행이 겹쳤을 때의 취소와 main push 발동은 아직 직접 관측하지 않았으며, 설정 검토를 해당 이벤트의 실증으로 바꾸지 않는다. main 검사는 사용자 병합 후 마감 과정에서 확인한다. 이후 제출의 최종 검사 상태는 PR 화면에서 최신 커밋 기준으로 확인하며, 문서에 성공 실행의 자기 커밋 식별자를 계속 덧붙이지 않는다.
 
 ### Windows 루트 경로 판별 실패와 수정
 
@@ -166,7 +169,7 @@ job과 step 시간은 GitHub API의 시작/종료 시각 차이며 대기열 시
 
 `repositoryFiles(root)`는 [Git rev-parse](https://git-scm.com/docs/git-rev-parse.html)의 `--is-inside-work-tree`와 `--show-prefix`를 함께 사용한다. 작업 트리 안이고 최상위로부터의 상대 경로가 비어 있을 때만 파일 목록을 읽는다. 하위 폴더에서 일부 문서만 검사하거나 `.git`과 bare 저장소의 관리 파일을 검사하는 것은 계속 거부한다. 문서 링크에 적힌 파일명 자체의 대소문자 검사는 변경하지 않는다.
 
-추가한 회귀 검사는 같은 루트의 대소문자 표기, `.git` 디렉터리, bare 저장소다. 수정 후보는 Windows에서 전체 27개와 WIKI 전체 링크 검사를 통과했다. 기존 실패를 무시하거나 검사를 줄이지 않았으며, GitHub 실행기에서 해결됐는지는 수정 커밋 후 같은 workflow로 다시 확인해야 한다.
+추가한 회귀 검사는 같은 루트의 대소문자 표기, `.git` 디렉터리, bare 저장소다. 수정본은 로컬 Windows에서 전체 27개와 WIKI 전체 링크 검사를 통과한 뒤 [수정 커밋](https://github.com/OnePLoom/oneploom-wiki/commit/49146c19fb52b68e8bdf783881cd400f4f72b627)으로 제출했다. 같은 GitHub workflow에서도 27개와 전체 WIKI 검사가 통과해 관측한 실행 실패의 해결을 확인했다. 기존 검사를 줄이거나 실패를 무시하지 않았다. 이 결과가 첫 실행의 구체적인 경로 표기를 소급해 입증하는 것은 아니다.
 
 ## 외부 도구와 고지
 
