@@ -135,6 +135,32 @@ test('unknown arguments and a subdirectory root fail before a partial scan', (t)
   assert.match(partial.stderr, /최상위 폴더/);
 });
 
+test('Windows case aliases of the repository root do not cause a partial-scan error', (t) => {
+  const root = fixture(t, { 'README.md': '# Root\n[local](#root)\n' });
+  const aliases = process.platform === 'win32' ? [root.toUpperCase(), root.toLowerCase()] : [root];
+  for (const alias of aliases) {
+    const result = run(alias);
+    assert.equal(result.status, 0, result.stderr);
+    assert.match(result.stdout, /문서 1개, 내부 링크 1개/);
+  }
+});
+
+test('the Git metadata directory is not a document worktree root', (t) => {
+  const root = fixture(t, { 'README.md': '# Root\n' });
+  const result = run(path.join(root, '.git'));
+  assert.equal(result.status, 2);
+  assert.match(result.stderr, /최상위 폴더/);
+});
+
+test('bare repositories are rejected before scanning Git metadata', (t) => {
+  const root = fixture(t, { 'README.md': '# Root\n' });
+  const bare = path.join(root, 'bare');
+  execFileSync('git', ['init', '--bare', '--quiet', bare], { stdio: 'pipe' });
+  const result = run(bare);
+  assert.equal(result.status, 2);
+  assert.match(result.stderr, /최상위 폴더/);
+});
+
 test('an empty repository does not pass', (t) => {
   const root = fixture(t, {});
   const result = run(root);

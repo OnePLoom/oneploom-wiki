@@ -1,5 +1,5 @@
 import { execFileSync } from 'node:child_process';
-import { lstatSync, readFileSync, realpathSync } from 'node:fs';
+import { lstatSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { parseArgs } from 'node:util';
@@ -44,8 +44,10 @@ export function readDocument(filename) {
 
 function repositoryFiles(root) {
   const options = { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] };
-  const top = execFileSync('git', ['rev-parse', '--show-toplevel'], options).trim();
-  if (realpathSync(top) !== realpathSync(root)) {
+  const [insideWorktree, prefix = ''] = execFileSync(
+    'git', ['rev-parse', '--is-inside-work-tree', '--show-prefix'], options,
+  ).trimEnd().split(/\r?\n/);
+  if (insideWorktree !== 'true' || prefix !== '') {
     throw new Error('--root에는 Git 저장소의 최상위 폴더를 지정하세요');
   }
   const output = execFileSync('git', ['ls-files', '--cached', '--others', '--exclude-standard', '-z'], options);
