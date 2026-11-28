@@ -12,3 +12,6 @@ Desktop.ini
 
 # 로컬 작업 상태
 /.harness/
+
+# 문서 검사 개발 환경
+/node_modules/

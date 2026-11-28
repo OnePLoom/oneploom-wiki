@@ -30,4 +30,16 @@ GitHub의 New issue에서 해당 양식을 선택하고 문서 경로, 정확한
 
 ## 개발 검사
 
-코드와 WIKI의 CI 범위, 환경 선택 이유와 실제 검증 상태는 [development/ci.md](development/ci.md)에서 확인한다. 현재 WIKI 내부 링크 검사는 후속 구현 단계이며, 아직 실행 가능한 명령이나 필수 검사로 안내하지 않는다. 문서의 의미와 요구사항 대조는 자동 링크 검사와 별도로 유지한다.
+코드와 WIKI의 CI 범위, 환경 선택 이유와 실제 검증 상태는 [development/ci.md](development/ci.md)에서 확인한다. Windows에서 Git과 Node.js 22 계열을 준비한 뒤 저장소 루트에서 실행한다. 이 도구는 WIKI 개발용이며 제품 실행 의존성이 아니다.
+
+```powershell
+npm ci --ignore-scripts --no-audit --no-fund
+npm test
+npm run check:links
+```
+
+PowerShell에서 `npm.ps1` 실행 정책 오류가 나면 위 명령의 `npm`을 `npm.cmd`로 바꾼다. 전역 실행 정책을 바꿀 필요는 없다. 잠금 파일을 바꾸지 않는 평소 검사에는 `npm install` 대신 `npm ci`를 사용한다. `node_modules`는 Git에 올리지 않는다.
+
+검사 대상은 Git이 공유하는 Markdown과 ignore되지 않은 새 문서다. 없는 파일/제목, 대소문자 오류와 저장소 밖 연결을 실패로 처리한다. 외부 URL에는 접속하지 않는다. 출력의 제목 원문 일치 수는 제목 존재 확인이며 GitHub와 Obsidian의 클릭 동작이 같다는 보장은 아니다. 자세한 지원 문법과 한계는 위 CI 문서의 「검사 범위와 실패 처리」를 따른다.
+
+문서의 의미와 요구사항 대조는 자동 링크 검사와 별도로 유지한다. 현재 workflow는 작성 단계이며 실제 GitHub 성공과 필수 검사 등록은 아직 확인 전이다.
