@@ -7,7 +7,7 @@
 | 검사 | 확인할 범위 | 현재 단계 |
 | --- | --- | --- |
 | 코드의 Windows tests | 기존 명령/프로젝트 발견 테스트 전체와 실패 전달 | workflow 작성과 로컬 Windows 검사 완료. GitHub 실행과 필수 등록 전 |
-| WIKI 내부 링크 | 저장소 내부 문서 파일과 섹션의 연결 | 후속 구현 예정 |
+| WIKI 내부 링크 | 저장소 내부 문서 파일과 섹션의 연결 | 검사기/workflow 작성과 로컬 Windows 검사 완료. GitHub 실행과 필수 등록 전 |
 
 작업의 범위와 전체 완료 조건은 [공통 이슈 4](https://github.com/OnePLoom/oneploom/issues/4)에 연결한다. 한쪽 로컬 검사가 끝났다는 이유로 두 저장소의 CI 구성이 완료됐다고 판단하지 않는다.
 
@@ -77,6 +77,48 @@ checkout의 자격증명 보존은 끄고 사용자 PAT, 다른 저장소 토큰
 
 현재 사용자가 등록할 Secret은 없다. 이후 비밀값이 필요한 기능을 실제 추가할 때만 필요한 저장소/환경과 job에 한정해 등록한다. 등록 위치와 노출 시 대응은 코드 CONTRIBUTING의 「CI의 비밀값 관리」가 소유한다. 비밀값 탐지 검사에서 발견하지 못했다는 사실이 모든 자격증명과 보안 문제의 부재를 보증하지는 않는다.
 
+## WIKI 내부 링크 검사
+
+WIKI의 검사 명령과 준비 방법은 [WIKI CONTRIBUTING의 「개발 검사」](../CONTRIBUTING.md)에서 관리한다. Markdown 해석, 제목 식별과 저장소 검사의 책임을 구분한다.
+
+| 위치 | 맡는 책임 |
+| --- | --- |
+| [tools/check-links.js](../tools/check-links.js) | Git 공유 대상 목록을 읽고 문서 파일과 제목 연결을 검사. 파일은 수정하지 않음 |
+| [tests/check-links.test.js](../tests/check-links.test.js) | 임시 Git 저장소에서 정상, 누락, 표기, 경로와 실행 실패를 확인 |
+| [package.json](../package.json), [package-lock.json](../package-lock.json) | 개발 의존성과 공통 실행 명령, 실제 설치할 버전과 무결성 값 |
+| [.github/workflows/document-checks.yml](../.github/workflows/document-checks.yml) | PR/main 이벤트, 실행기 준비, 최소 권한과 검사 순서 |
+
+### 표준 라이브러리의 선택과 경계
+
+[markdown-it](https://github.com/markdown-it/markdown-it)으로 Markdown을 해석하고, [github-slugger](https://github.com/Flet/github-slugger)로 GitHub식 제목 식별자를 만든다. 전자는 [VS Code의 Markdown 기능](https://github.com/microsoft/vscode/blob/main/extensions/markdown-language-features/package.json)에서도 사용하는 파서다. OnepLoom의 검사 코드는 파일 경로와 문서 간 연결을 확인하며 Markdown 문법이나 Unicode 제목 변환을 직접 재구현하지 않는다.
+
+Node.js는 이 WIKI의 개발 검사에만 필요하다. 제품과 코드 저장소의 Python 실행 환경을 바꾸거나 배포 사용자에게 Node.js를 추가로 요구하지 않는다. 현재 Windows 개발 환경에서 확인한 Node.js 22 계열로 CI를 구성하며, 정확한 실행 버전은 job 로그에서 확인한다.
+
+다음 후보를 실제 입력과 비교했다.
+
+| 후보 | 확인한 결과와 판단 |
+| --- | --- |
+| lychee 0.24.2의 오프라인 파일/앵커 검사 | 원본 164문서에서 제목 연결 177건이 GitHub식 앵커와 다르게 해석됨. 기존 제목 표기를 유지하는 검사에 그대로 적용하지 않음 |
+| Python Markdown 해석기와 github-slugger 0.0.3 포트 | Python 3.13.9에서 포트의 import가 UnicodeEncodeError로 실패. 라이브러리를 임시 수정하거나 실패를 무시해 사용하지 않음 |
+| JavaScript 원본 파서와 제목 변환기 | 기존 제목 표기와 GitHub 앵커를 구분하고 저장소 경계만 검사 코드에서 다룸. Node.js 준비 비용을 수용하고 선택 |
+
+기존 제목 링크는 [Obsidian의 제목 연결](https://help.obsidian.md/links)과 GitHub의 해석이 다르다. 검사기는 GitHub식 앵커 또는 제목 원문이 실제로 존재하는지 확인하며, 제목 원문으로만 확인한 링크 수를 따로 출력한다. 예를 들어 `#사용%20방법`과 `#사용-방법`은 검사 대상 문서에 `사용 방법` 제목이 있는지 각각 확인한다. 전자가 GitHub에서 같은 방식으로 이동한다는 뜻은 아니다. 기존 링크를 자동 치환하거나 검사에서 제외하지 않는다. 두 화면의 실제 클릭과 위치 확인은 별도 검증이다.
+
+### 검사 범위와 실패 처리
+
+- Git이 추적하는 파일과 ignore되지 않은 새 파일 중 Markdown을 검사한다. 개발 중 새 문서도 포함하고, 이미 추적된 파일이 로컬에서 사라지면 실패한다. 로컬 전용 파일은 검사에 넣지 않으며 그 파일을 가리키는 공유 문서의 링크는 실패한다.
+- 일반 Markdown 링크, 참조형 링크, 이미지와 표 안의 링크를 해석한다. 코드 블록, 인라인 코드와 HTML 주석 안의 예시는 실행할 링크로 취급하지 않는다.
+- 파일과 폴더의 존재, 정확한 대소문자, URL 인코딩과 Markdown 제목을 확인한다. 제목의 강조/인라인 코드와 중복 제목의 GitHub식 번호도 구분한다.
+- 저장소 밖 상대 경로, 절대 경로, 로컬 파일 URL, symlink/junction, 지원하지 않는 scheme/query를 거부한다. UTF-8을 해석하지 못하거나 대상 파일을 읽지 못해도 성공으로 처리하지 않는다.
+- HTTP(S), 메일과 외부 호스트 링크는 개수만 알리고 네트워크 요청을 보내지 않는다. HTML 링크/직접 지정한 HTML 앵커, Obsidian 전용 `[[...]]` 문법, PDF 내부 위치, 정의되지 않은 참조의 의도나 일반 본문의 절 이름은 자동 검사 범위가 아니다. 현재 작성 규칙은 저장소 내부 Markdown 상대 링크다.
+- 오류에는 문서와 해당 문단/표 셀의 시작 행을 출력한다. 긴 문단의 링크가 있는 정확한 열이나 화면상의 위치까지 뜻하지 않는다.
+
+정상은 종료 코드 0, 문서/연결 오류는 1, 준비/인자 오류나 Markdown이 하나도 없는 경우는 2다. 로컬과 CI는 같은 명령을 사용한다. 명령이 성공했다고 문서 내용의 정확성이나 모든 렌더러의 호환성이 입증되는 것은 아니다.
+
+CI는 `npm ci --ignore-scripts --no-audit --no-fund`로 잠금 파일의 개발 의존성을 설치한다. [npm ci](https://docs.npmjs.com/cli/v11/commands/npm-ci)는 선언과 잠금 파일이 다르면 실패하며, 설치 과정의 패키지 스크립트는 끈다. 설치가 끝난 뒤 검사기 테스트와 전체 WIKI 검사를 각각 실행한다. 작은 의존성 묶음에는 별도 캐시를 추가하지 않았다. [setup-node](https://github.com/actions/setup-node)의 자동 캐시도 끈다. 네트워크가 필요한 준비 단계와 오프라인 문서 검사 단계를 구분한다.
+
+PR/main 이벤트, 이전 실행 취소, 저장소 읽기 권한과 초기 15분 상한은 앞의 공통 기준을 따른다. 새 Secret은 필요하지 않다. 향후 쓰기 권한을 가진 배포/이슈 처리 작업에 이 검사 job을 그대로 재사용하지 않는다.
+
 ## 검증 상태
 
 2026-11-28 로컬 Windows 검사 결과다. GitHub의 호스팅된 실행 결과와 구분한다.
@@ -89,7 +131,10 @@ checkout의 자격증명 보존은 끄고 사용자 PAT, 다른 저장소 토큰
 | 정적 구문 | actionlint 1.7.12에서 workflow 오류 없음 |
 | Action 참조 변경 | 2026-11-28 공식 Git 참조 조회에서 두 `v7` 태그가 각각 기존에 확인한 checkout v7.0.1, setup-python v7.1.0의 커밋과 같음. 이후 태그 이동까지 보장하는 결과는 아님 |
 | 비밀값 탐지 | Gitleaks CLI 8.30.1로 공개 대상 파일과 로컬에서 접근 가능한 양쪽 Git 이력을 검사. 탐지/검사 오류 없음. 배포 CI로 추가한 것은 아님 |
-| 원격 실행 | 아직 미실행. PR의 실제 실행 결과 확인 필요 |
+| WIKI 검사기 | Windows 11/Node.js 22.12.0에서 회귀 검사 24개 통과, 실패/건너뜀 없음. 테스트 3.841초. 전체 문서 검사는 아래 결과 참고 |
+| WIKI 전체 문서 | Markdown 164개, 내부 링크 2,293개 확인, 오류 0개. 제목 원문 일치 177개를 별도 집계하고 외부 링크 1,043개는 제외 |
+| WIKI 준비/의존성 | npm ci 성공, 잠금 파일과 설치 파일 해시 보존. 8개 개발 패키지의 npm audit에서 알려진 취약점 0개. 보안 문제 전체의 부재를 보증하지 않음 |
+| 원격 실행 | 양쪽 모두 아직 미실행. PR의 실제 실행 결과 확인 필요 |
 | 필수 검사 | 아직 미등록. 성공 결과와 실제 check 이름을 확인한 뒤 등록 |
 
 초안의 첫 로컬 실행에서는 WSL에서 Windows로 전달한 Python 환경 변수 세 개가 누락돼 경고 오류화 조건이 적용되지 않았다. Windows 프로세스에서 환경을 구성하도록 시험 실행부를 수정한 뒤 기존 59개와 합성 입력 6개 전체를 다시 확인했다. 이후 실행기 분리에서는 로컬/CI 명령의 Python 실행 옵션으로 바꾸고 위 69개를 다시 확인했다. 과거 결과를 새 실행기의 검증으로 대신하지 않았으며 두 실행의 테스트 수가 달라 속도 개선으로 비교하지 않는다.
@@ -98,13 +143,20 @@ checkout의 자격증명 보존은 끄고 사용자 PAT, 다른 저장소 토큰
 
 Action 참조를 메이저 태그로 변경할 때는 제품 코드, 테스트와 공통 검사 진입점이 그대로임을 확인해 위 69개 결과를 재사용한다. workflow 구문 검사는 변경 후 다시 수행하며 실제 GitHub 실행은 여전히 미확인이다.
 
+WIKI 검사기의 첫 회귀 검사에서 폴더 경로 끝의 `/`를 중복 처리하는 오류를 발견했다. 경로 정규화에서 수정한 뒤 원래 실패 사례를 포함한 전체 24개를 재검증했다. 원문 파일/제목이 없는 경우와 표기 차이를 구분하며, 원문 문서를 변경해 통과시키지 않았다.
+
 ## 외부 도구와 고지
 
 | 도구 | 확인한 버전과 이용 조건 | 사용 범위 |
 | --- | --- | --- |
 | actions/checkout | [v7.0.1](https://github.com/actions/checkout/releases/tag/v7.0.1), [MIT](https://github.com/actions/checkout/blob/3d3c42e5aac5ba805825da76410c181273ba90b1/LICENSE) | CI 작업 사본 준비 |
 | actions/setup-python | [v7.1.0](https://github.com/actions/setup-python/releases/tag/v7.1.0), [MIT](https://github.com/actions/setup-python/blob/6d4fd22b20465ccc0f7354476588e8df7c9ca0e0/LICENSE) | CI Python 환경 선택 |
+| actions/setup-node | [v7](https://github.com/actions/setup-node/tree/v7), [MIT](https://github.com/actions/setup-node/blob/v7/LICENSE) | WIKI CI의 Node.js 준비 |
+| markdown-it | [15.0.3](https://www.npmjs.com/package/markdown-it/v/15.0.3), MIT | WIKI의 Markdown 문법 해석 |
+| github-slugger | [2.0.0](https://www.npmjs.com/package/github-slugger/v/2.0.0), ISC | 제목의 GitHub식 식별자와 중복 번호 생성 |
 | actionlint | [v1.7.12](https://github.com/rhysd/actionlint/releases/tag/v1.7.12), [MIT](https://github.com/rhysd/actionlint/blob/v1.7.12/LICENSE.txt) | 개발 중 workflow 정적 검사. 제품/CI 실행 의존성으로 추가하지 않음 |
 | Gitleaks CLI | [v8.30.1](https://github.com/gitleaks/gitleaks/releases/tag/v8.30.1), [MIT](https://github.com/gitleaks/gitleaks/blob/v8.30.1/LICENSE) | 이번 공개 대상과 Git 이력의 비밀값 탐지. 제품/CI 실행 의존성으로 추가하지 않음 |
 
 외부 도구의 코드를 저장소에 복사하지 않는다. actionlint와 Gitleaks CLI는 공식 릴리스의 체크섬을 대조해 실행했다. 후자는 서버나 유료 GitHub Action을 설치한 것이 아니며, 발견 내용의 원문/비밀값을 출력하거나 보관하지 않는 방식으로 검사했다. Python의 검사 발견/실행/결과 판정은 [unittest의 공개 API](https://docs.python.org/3.13/library/unittest.html)를 사용한다.
+
+WIKI 개발 의존성 8개의 실제 배포본에서 라이선스 파일을 확인했다. 직접 사용하는 두 패키지 외에 mdurl, linkify-it, punycode.js, uc.micro는 MIT, entities는 BSD-2-Clause, argparse는 PSF-2.0이다. 패키지의 원래 고지는 설치된 의존성에 보존되며 소스를 이 저장소나 제품 배포물에 복사하지 않는다. 갱신 시 잠금 파일, 이용 조건과 실제 검사 결과를 함께 검토한다.

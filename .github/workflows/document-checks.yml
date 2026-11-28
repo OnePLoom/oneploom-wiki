@@ -1,0 +1,44 @@
+name: Document verification
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  document-links:
+    name: Document links
+    runs-on: windows-2025
+    permissions:
+      contents: read
+    # Initial hang limit; review against hosted setup and check durations.
+    timeout-minutes: 15
+    steps:
+      - name: Check out the tested revision
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+          package-manager-cache: false
+
+      - name: Install locked development dependencies
+        shell: pwsh
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
+      - name: Test the link checker
+        shell: pwsh
+        run: npm test
+
+      - name: Check repository links
+        shell: pwsh
+        run: npm run check:links
