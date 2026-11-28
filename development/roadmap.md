@@ -4,6 +4,8 @@
 
 현재 진행 중인 단위는 [프로젝트별 WIKI 연결과 Codex 시작](https://github.com/OnePLoom/oneploom/issues/8)이다. 첫 변경 묶음에서 등록된 WIKI와 위치표의 읽기 전용 확인을 구현하고 Windows 전체 검사 96개를 통과했다. 연결 저장과 실제 Codex 실행은 후속이며, [첫 단계의 관측과 한계](../evidence/experiments/runtime/2026-11-28_16-53-13-wiki-connect.md)를 구분한다.
 
+후속 묶음에서는 연결 저장에 필요한 기존 SQLite DB의 열기와 짧은 트랜잭션을 구현했다. 새 23개를 포함한 Windows 전체 119개가 통과했으며 [기록 보호의 확인 범위](../evidence/experiments/recovery/2026-11-28_17-57-33-state-connection.md)를 남겼다. 최초 DB 생성, 변경 계획/승인과 실제 설정 파일 반영은 아직 연결 전이다.
+
 독립 코드/WIKI의 준비와 MIT 적용 뒤 첫 발견 기능을 구현하고, 2026-11-27 양쪽 PR의 main 반영과 작업 마감까지 확인한 단계다. 명령, 대상 선택과 설정 읽기의 Windows 자동 검사 59개는 구현 당시의 통과 결과이며, 병합된 코드와 검사 입력의 동일성을 확인해 재사용했다. 실제 WIKI/권한 연결, Codex 실행, 설치 패키지와 릴리스는 아직이다. [첫 구현 기록의 「병합과 작업 마감」](../evidence/experiments/runtime/2026-11-25_16-13-58-project-discovery.md)에서 실제 PR과 최종 커밋을 확인한다. 첫 기능의 main 반영과 제품 전체의 배포 완료를 구분한다.
 
 ## 순서

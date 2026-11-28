@@ -419,7 +419,7 @@ OS 사용자 폴더 조회, 파일 쓰기와 Git 제외, AI CLI의 실제 쓰기
 
 #### 저장 형식과 연결의 검증 입력
 
-11/16 [저장 값의 형식](../design/workflow/storage.md), [연결 준비와 내구성](../design/workflow/storage.md), [이전 구성의 DB 호환 — 「DB 형식과 이전 구성의 호환」](../design/workflow/storage.md)에 대응하는 **미실행 입력**이다. 전체 DDL과 저장 코드를 연결한 뒤 위 SQL 제약 시험과 함께 수행한다.
+11/16 [저장 값의 형식](../design/workflow/storage.md), [연결 준비와 내구성](../design/workflow/storage.md), [이전 구성의 DB 호환 — 「DB 형식과 이전 구성의 호환」](../design/workflow/storage.md)에 대응하는 입력이다. 전체 DDL과 저장 코드를 연결한 수용 시험은 미실행이다. 11/28 [Windows 파일 DB 검사](../evidence/experiments/recovery/2026-11-28_17-57-33-state-connection.md)에서 기존 파일 열기, 식별/형식, 실제 잠금/rollback과 비정상 종료 뒤 journal 복구를 부분 확인했다. JSON 자료 전체, 설치/인계/변환과 실제 연결 변경의 성공으로 확대하지 않는다.
 
 | 입력 | 확인할 결과 |
 | --- | --- |
