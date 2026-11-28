@@ -159,7 +159,18 @@ job과 step 시간은 GitHub API의 시작/종료 시각 차이며 대기열 시
 
 코드의 `Windows tests`와 WIKI의 `Document links`를 각각 기존 main ruleset에 추가하고 기존 PR, 대화 해결, 선형 이력과 삭제/강제 push 방지 규칙을 보존했다. 결과 출처는 실제 성공을 보고한 GitHub Actions로 지정했다. 병합 전 최신 main을 포함하는 검사를 요구하는 기본 strict 방식을 사용한다. 다른 PR이 먼저 병합되면 작업 브랜치 최신화와 재검사가 필요할 수 있다. [GitHub의 strict/loose 비교](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets)를 따른다.
 
-PR 생성과 수정 커밋의 실제 실행을 확인했다. 작업 브랜치 push의 별도 실행이 없고 PR에 경로 필터가 없다는 설정도 대조했다. 실행이 겹쳤을 때의 취소와 main push 발동은 아직 직접 관측하지 않았으며, 설정 검토를 해당 이벤트의 실증으로 바꾸지 않는다. main 검사는 사용자 병합 후 마감 과정에서 확인한다. 이후 제출의 최종 검사 상태는 PR 화면에서 최신 커밋 기준으로 확인하며, 문서에 성공 실행의 자기 커밋 식별자를 계속 덧붙이지 않는다.
+PR 생성과 수정 커밋, 아래 main 병합 후 push에서 실제 실행을 확인했다. 작업 브랜치 push의 별도 실행이 없고 PR에 경로 필터가 없다는 설정도 대조했다. 실행이 겹쳤을 때의 취소는 아직 직접 관측하지 않았으며, 설정 검토를 해당 이벤트의 실증으로 바꾸지 않는다. 이후 제출의 최종 검사 상태는 PR 화면에서 최신 커밋 기준으로 확인하며, 문서에 성공 실행의 자기 커밋 식별자를 계속 덧붙이지 않는다.
+
+### main 병합과 검사
+
+2026-11-28 [코드 PR 5](https://github.com/OnePLoom/oneploom/pull/5), [WIKI PR 4](https://github.com/OnePLoom/oneploom-wiki/pull/4) 순서로 main에 병합됐다. 양쪽 최종 반영 커밋의 전체 파일 내용은 각각 검토한 PR head와 같으며, 병합 후 `push`로 실행된 검사를 별도로 확인했다.
+
+| 저장소와 최종 반영 커밋 | main 검사 결과 | 실행 시간 |
+| --- | --- | --- |
+| 코드 [6e70a3a](https://github.com/OnePLoom/oneploom/commit/6e70a3a6195c2c97977067efe3e4a823b1d8ae30) | [Windows tests](https://github.com/OnePLoom/oneploom/actions/runs/46111228110): 69개 통과 | 테스트 4.792초, job 18초 |
+| WIKI [3b6aca3](https://github.com/OnePLoom/oneploom-wiki/commit/3b6aca3019e6de92ab47d8ad68e6f5a620696a64) | [Document links](https://github.com/OnePLoom/oneploom-wiki/actions/runs/46111248449): 27개 통과, 실패/건너뜀 없음. 164문서/내부 링크 2,293개 오류 0, 외부 링크 1,052개는 검사 제외 | job 34초 |
+
+필수 검사와 양쪽 반영을 확인한 뒤 [CI 작업 이슈](https://github.com/OnePLoom/oneploom/issues/4)를 완료 처리했다. 위 시간도 각 실행의 관측값이며 이전 PR 실행과의 속도 개선 수치로 해석하지 않는다. 개발 CI의 main 반영 완료와 제품 전체의 Windows 설치/사용 검증 완료는 별개다.
 
 ### Windows 루트 경로 판별 실패와 수정
 
